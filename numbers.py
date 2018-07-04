@@ -1,0 +1,36 @@
+import random
+from sys import stdin, stdout
+
+class RandomNumberGenerator:
+	def __init__(self):
+		self.values = {}
+
+		self.num_testcases = int(stdin.readline().strip().split()[0])
+		self.values["num_testcases"] = self.num_testcases
+		
+		possible_print_num_testcases = ['T', 't', 'Y', 'y', 
+										'F', 'f', 'N', 'n']
+		self.print_num_testcases = stdin.readline().strip().split()[0]
+		self.values["print_num_testcases"] = self.print_num_testcases
+
+		self.options = {}
+
+		is_float = stdin.readline().strip().split()[0]
+		self.options["is_float"] = is_float
+
+		minvalue, maxvalue = map(int, raw_input().split())
+		self.options["minvalue"] = minvalue
+		self.options["maxvalue"] = maxvalue
+
+		self.values["options"] = self.options
+
+	def get_values(self):
+		return self.values
+
+	def print_values(self, values):
+		if values['print_num_testcases'] in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes']:
+			stdout.write(str(values['num_testcases']) + '\n')
+		if values['options']["is_float"] in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes']:
+			stdout.write(str(random.uniform(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
+		else:
+			stdout.write(str(random.randint(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
