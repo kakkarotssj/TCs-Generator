@@ -1,0 +1,7 @@
+5 # number of test cases
+y # whether to print number of test cases or not
+8 # size of arrays
+y # whether to print size of arrays or not
+n # whether numbers in arrays are strictly increasing or not
+y # whether numbers in arrays are distinct or not
+10 20
