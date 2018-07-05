@@ -33,6 +33,8 @@ class RandomNumberGenerator:
 		if values['print_num_testcases'] in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes']:
 			stdout.write(str(values['num_testcases']) + '\n')
 		if values['options']["is_float"] in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes']:
-			stdout.write(str(random.uniform(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
+			for i in range(values["num_testcases"]):
+				stdout.write(str(random.uniform(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
 		else:
-			stdout.write(str(random.randint(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
+			for i in range(values["num_testcases"]):
+				stdout.write(str(random.randint(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
