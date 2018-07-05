@@ -1,4 +1,0 @@
-5 # number of test cases
-y # whether to print number of test cases or not
-f # whether random number is float or not
-10 20
