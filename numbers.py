@@ -30,9 +30,9 @@ class RandomNumberGenerator:
 		return self.values
 
 	def print_values(self, values):
-		if values['print_num_testcases'] in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes']:
+		if values['print_num_testcases'] in ['T', 't', 'Y', 'y']:
 			stdout.write(str(values['num_testcases']) + '\n')
-		if values['options']["is_float"] in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes']:
+		if values['options']["is_float"] in ['T', 't', 'Y', 'y']:
 			for i in range(values["num_testcases"]):
 				stdout.write(str(random.uniform(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
 		else:
