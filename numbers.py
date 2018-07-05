@@ -8,8 +8,6 @@ class RandomNumberGenerator:
 		self.num_testcases = int(stdin.readline().strip().split()[0])
 		self.values["num_testcases"] = self.num_testcases
 		
-		possible_print_num_testcases = ['T', 't', 'Y', 'y', 
-										'F', 'f', 'N', 'n']
 		self.print_num_testcases = stdin.readline().strip().split()[0]
 		self.values["print_num_testcases"] = self.print_num_testcases
 
