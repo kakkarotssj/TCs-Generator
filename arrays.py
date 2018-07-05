@@ -66,23 +66,23 @@ class RandomArrayGenerator:
 		return arr
 
 	def print_values(self, values):
-		if values["print_num_testcases"] in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes']:
+		if values["print_num_testcases"] in ['T', 't', 'Y', 'y']:
 			stdout.write(str(values["num_testcases"]) + '\n')
 		
 		for i in range(values["num_testcases"]):
-			if values["options"]["print_array_size"] in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes']:
+			if values["options"]["print_array_size"] in ['T', 't', 'Y', 'y']:
 				stdout.write(str(values["options"]["array_size"]) + '\n')
 
 			arr = []
 
 			# below are the three possible values of distinct and strictly_increasing values
 			# 1) distinct --> False and strictly_increasing --> False
-			if values["options"]["distinct"] not in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes'] and values["options"]['strictly_increasing'] not in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes']:
+			if values["options"]["distinct"] not in ['T', 't', 'Y', 'y'] and values["options"]['strictly_increasing'] not in ['T', 't', 'Y', 'y']:
 				for j in range(values['options']["array_size"]):
 					arr.append(random.randint(values["options"]["minvalue"], values["options"]["maxvalue"]))
 
 			# 2) strictly_increasing --> True
-			if values["options"]["strictly_increasing"] in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes']:
+			if values["options"]["strictly_increasing"] in ['T', 't', 'Y', 'y']:
 				if values['options']['array_size'] > values["options"]["maxvalue"] - values['options']['minvalue'] + 1:
 					raise ValueError("Strictly Increasing Array can not be created because of insufficient minimum, maximum window")
 				
@@ -106,7 +106,7 @@ class RandomArrayGenerator:
 						j += 1
 
 			# 3) distinct --> True and strictly_increasing --> False
-			if values['options']['distinct'] in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes'] and values['options']['strictly_increasing'] not in ['T', 't', 'True', 'true', 'Y', 'y', 'Yes', 'yes']:
+			if values['options']['distinct'] in ['T', 't', 'Y', 'y'] and values['options']['strictly_increasing'] not in ['T', 't', 'Y', 'y']:
 				if values['options']['array_size'] > values["options"]["maxvalue"] - values['options']['minvalue'] + 1:
 					raise ValueError(" Array can not be created because of insufficient minimum, maximum window")
 
