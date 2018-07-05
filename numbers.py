@@ -5,17 +5,21 @@ class RandomNumberGenerator:
 	def __init__(self):
 		self.values = {}
 
+		# number of test cases to print
 		self.num_testcases = int(stdin.readline().strip().split()[0])
 		self.values["num_testcases"] = self.num_testcases
 		
+		# whether to print number of test cases or not i.e self.num_testcases
 		self.print_num_testcases = stdin.readline().strip().split()[0]
 		self.values["print_num_testcases"] = self.print_num_testcases
 
 		self.options = {}
 
+		# whether the number is float or not
 		is_float = stdin.readline().strip().split()[0]
 		self.options["is_float"] = is_float
 
+		#minvalue first and then maxvalue with just a space
 		minvalue, maxvalue = map(int, raw_input().split())
 		self.options["minvalue"] = minvalue
 		self.options["maxvalue"] = maxvalue
