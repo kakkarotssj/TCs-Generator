@@ -43,6 +43,7 @@ class RandomNumberGenerator:
 	def print_values(self, values):
 		if values['print_num_testcases'] in self.possible_true_false_values[:4]:
 			stdout.write(str(values['num_testcases']) + '\n')
+		
 		if values['options']["is_float"] in self.possible_true_false_values[:4]:
 			for i in range(values["num_testcases"]):
 				stdout.write(str(random.uniform(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
