@@ -60,6 +60,10 @@ class RandomStringGenerator:
 		if len(values['options']['allowed']) != 4:
 			raise ValueError("Carefully enter the choice of allowed letters")
 
+		for y_n in values['options']['allowed']:
+			if y_n not in ['T', 't', 'Y', 'y', 'F', 'f', 'N', 'n']:
+				raise TypeError("allowed values cannot be identified correctly")
+
 		for _ in range(values['num_testcases']):
 			if values['options']['print_string_size'] in ['T', 't', 'y', 'Y']:
 				stdout.write(str(values['options']['string_size']) + '\n')
