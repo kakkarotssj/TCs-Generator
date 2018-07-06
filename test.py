@@ -25,4 +25,4 @@ class Generators:
 generator = Generators()
 # generator.generate_numbers()
 # generator.generate_arrays()
-generator.generate_strings()
+# generator.generate_strings()
