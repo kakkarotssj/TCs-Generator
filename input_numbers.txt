@@ -1,4 +1,12 @@
 5 # number of test cases
-y # whether to print number of test cases or not
+y # whether to print number of test cases or not (THIS CASE --> YES)
 f # whether random number is float or not
+10 20
+5 # number of test cases
+y # whether to print number of test cases or not (THIS CASE --> YES)
+f # whether random number is float or not
+10 20
+5 # number of test cases
+f # whether to print number of test cases or not (THIS CASE --> YES)
+T # whether random number is float or not
 10 20
