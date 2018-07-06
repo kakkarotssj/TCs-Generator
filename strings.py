@@ -57,6 +57,9 @@ class RandomStringGenerator:
 		if len(possible_letters) <= 0:
 			raise ValueError("Carefully enter the values you want in string")
 
+		if len(values['options']['allowed']) != 4:
+			raise ValueError("Carefully enter the choice of allowed letters")
+
 		for _ in range(values['num_testcases']):
 			if values['options']['print_string_size'] in ['T', 't', 'y', 'Y']:
 				stdout.write(str(values['options']['string_size']) + '\n')
