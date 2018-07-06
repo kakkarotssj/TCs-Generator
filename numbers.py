@@ -4,6 +4,7 @@ from sys import stdin, stdout
 class RandomNumberGenerator:
 	def __init__(self):
 		self.values = {}
+		self.possible_true_false_values = ['T', 't', 'Y', 'y', 'F', 'f', 'N', 'n']
 
 		# number of test cases to print
 		self.num_testcases = int(stdin.readline().strip().split()[0])
@@ -26,13 +27,23 @@ class RandomNumberGenerator:
 
 		self.values["options"] = self.options
 
+		self.__validate_input()
+
+	def __validate_input(self):
+		assert self.values['num_testcases'] > 0, "Number of testcases has to be greater than 0"
+
+		assert self.values['print_num_testcases'] in self.possible_true_false_values, "whether to print_num_testcases is not understandable"
+		assert self.values['options']['is_float'] in self.possible_true_false_values, "whether numbers to generate is float or not is not understandable"
+
+		assert self.values['options']['minvalue'] < self.values['options']['maxvalue'], "minimum value has to be less than maximum value"
+
 	def get_values(self):
 		return self.values
 
 	def print_values(self, values):
-		if values['print_num_testcases'] in ['T', 't', 'Y', 'y']:
+		if values['print_num_testcases'] in self.possible_true_false_values[:4]:
 			stdout.write(str(values['num_testcases']) + '\n')
-		if values['options']["is_float"] in ['T', 't', 'Y', 'y']:
+		if values['options']["is_float"] in self.possible_true_false_values[:4]:
 			for i in range(values["num_testcases"]):
 				stdout.write(str(random.uniform(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
 		else:
