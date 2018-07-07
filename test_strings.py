@@ -4,35 +4,28 @@ from strings import RandomStringGenerator
 import string
 
 class RandomStringGeneratorTesting(unittest.TestCase):
-	def test_values(self):
-		self.rsg = RandomStringGenerator()
-		rsg_values = self.rsg.get_values()
+	def test_input_domains(self):
+		rsg = RandomStringGenerator()
 
-		self.assertLess(0, rsg_values['num_testcases'])
-
-		possible_print_num_testcases = ['T', 't', 'Y', 'y', 'F', 'f', 'N', 'n']
-		self.assertIn(rsg_values['print_num_testcases'], possible_print_num_testcases)
-
-		self.assertLess(0, rsg_values['options']['string_size'])
-		self.assertIn(rsg_values['options']['print_string_size'], possible_print_num_testcases)
-
-		self.assertIn(rsg_values['options']['distinct'], possible_print_num_testcases)
-
-		self.assertEqual(len(rsg_values['options']['allowed']), 4)
-		for y_n in rsg_values['options']['allowed']:
-			self.assertIn(y_n, possible_print_num_testcases)
-
-		possible_letters = ''
-		for i in range(4):
-			if i == 0 and rsg_values['options']['allowed'][0] in ['T', 't', 'y', 'Y']:
-				possible_letters += string.uppercase
-			elif i == 1 and rsg_values['options']['allowed'][1] in ['T', 't', 'y', 'Y']:
-				possible_letters += string.lowercase
-			elif i == 2 and rsg_values['options']['allowed'][2] in ['T', 't', 'y', 'Y']:
-				possible_letters += string.digits
-			elif i == 3 and rsg_values['options']['allowed'][3] in ['T', 't', 'y', 'Y']:
-				possible_letters += string.punctuation
-
-		if rsg_values['options']['distinct'] in possible_print_num_testcases[:4]:
-			self.assertLessEqual(rsg_values['options']['string_size'], len(possible_letters))
+		# value checking for num_testcases
+		value_error_values_num_testcases = [-2, 0]
+		[self.assertRaises(ValueError, rsg.store_num_testcases, i) for i in value_error_values_num_testcases]
 		
+		# value checking for print_num_testcases
+		value_error_values_print_num_testcases = '@Qr|'
+		[self.assertRaises(ValueError, rsg.store_print_num_testcases, i) for i in value_error_values_print_num_testcases]
+
+		# value checking for string size
+		value_error_values_string_size = [-2, 0]
+		[self.assertRaises(ValueError, rsg.store_string_size, i) for i in value_error_values_string_size]
+		
+		# value checking for print_string_size
+		value_error_values_print_string_size = '@Qr|'
+		[self.assertRaises(ValueError, rsg.store_print_string_size, i) for i in value_error_values_print_string_size]
+
+		# value checking for distinct
+		value_error_values_distinct = '@Qr|'
+		[self.assertRaises(ValueError, rsg.store_distinct, i) for i in value_error_values_distinct]
+
+		value_error_values_allowed = ['yyyyn', 'yyxx', 'yyyx', 'nnnz', 'yyy', 'xxx', 'nnnn']
+		[self.assertRaises(ValueError, rsg.store_allowed, i) for i in value_error_values_allowed]
