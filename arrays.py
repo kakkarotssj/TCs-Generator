@@ -94,8 +94,7 @@ class RandomArrayGenerator:
 
 	def store_minvalue_and_maxvalue(self, params):
 		min_and_max_values = params[0]
-		minvalue = min_and_max_values[0]
-		maxvalue = min_and_max_values[1]
+		minvalue, maxvalue = min_and_max_values[0], min_and_max_values[1]
 
 		strictly_increasing, distinct = params[1]['options']['strictly_increasing'], params[1]['options']['distinct']
 		array_size = params[1]['options']['array_size']
@@ -165,34 +164,80 @@ class RandomArrayGenerator:
 			# below are the three possible values of distinct and strictly_increasing values
 			# 1) distinct --> False and strictly_increasing --> False
 			if not distinct and not strictly_increasing:
-				for j in range(values['options']["array_size"]):
-					arr.append(random.randint(values["options"]["minvalue"], values["options"]["maxvalue"]))
+				arr = get_random_array([values["options"]["minvalue"], values["options"]["maxvalue"]], values['options']['array_size'])
 
 			# 2) strictly_increasing --> True
 			if strictly_increasing:
-				step = float(values["options"]["maxvalue"] - values["options"]["minvalue"] + 1) / float(values["options"]["array_size"])
-				if 1.0 < step < 2.0:
-					if values['options']['array_size'] == 1:
-						arr.append(values['options']['minvalue'])
-					else:
-						arr = self._get_distinct_values(values, arr)
-						arr.sort()
-				else:
-					step = int(step)
-
-					partition_minvalue = values['options']['minvalue']
-					j = 0
-					while j != values['options']['array_size']:
-						arr.append(random.randint(partition_minvalue, partition_minvalue+step-1))
-						partition_minvalue += step
-
-						j += 1
+				arr = get_increasing_array([values["options"]["minvalue"], values["options"]["maxvalue"]], values['options']['array_size'])
 
 			# 3) distinct --> True and strictly_increasing --> False
 			if distinct and not strictly_increasing:
-				arr = self._get_distinct_values(values, arr)
+				arr = get_distinct_butnot_increasing_array([values["options"]["minvalue"], values["options"]["maxvalue"]], values['options']['array_size'])
 
 			# 4) distinct --> True and strictly_increasing --> True would just be same as case 2
 			# no need to write code again
 
 			stdout.write(' '.join(str(element) for element in arr) + '\n')
+
+
+def get_random_array(min_and_max_values, array_size):
+	minvalue, maxvalue = min_and_max_values[0], min_and_max_values[1]
+
+	arr = []
+	for j in range(array_size):
+		arr.append(random.randint(minvalue, maxvalue))
+
+	return arr
+
+
+def get_distinct_butnot_increasing_array(min_and_max_values, array_size):
+	minvalue, maxvalue = min_and_max_values[0], min_and_max_values[1]
+
+	partitions = [[minvalue, maxvalue]]
+	length_partitions = 1
+
+	arr = []
+	j = 0
+	while j != array_size:
+		random_index = random.randint(0, length_partitions-1)
+		partition_number = random.randint(partitions[random_index][0], partitions[random_index][1])
+		arr.append(partition_number)
+		
+		if partition_number-1 >= partitions[random_index][0]:
+			partitions.insert(random_index+1, [partitions[random_index][0], partition_number-1])
+			length_partitions += 1
+		
+		if partition_number+1 <= partitions[random_index][1]:
+			partitions.insert(random_index+2, [partition_number+1, partitions[random_index][1]])
+			length_partitions += 1
+		
+		partitions.pop(random_index)
+		length_partitions -= 1
+
+		j += 1
+
+	return arr
+
+
+def get_increasing_array(min_and_max_values, array_size):
+	minvalue, maxvalue = min_and_max_values[0], min_and_max_values[1]
+
+	step = float(maxvalue - minvalue + 1) / float(array_size)
+	if 1.0 < step < 2.0:
+		if array_size == 1:
+			arr.append(minvalue)
+		else:
+			arr = get_distinct_butnot_increasing_array(min_and_max_values, array_size)
+			arr.sort()
+	else:
+		step = int(step)
+
+		partition_minvalue = minvalue
+		j = 0
+		while j != array_size:
+			arr.append(random.randint(partition_minvalue, partition_minvalue+step-1))
+			partition_minvalue += step
+
+			j += 1
+
+	return arr
