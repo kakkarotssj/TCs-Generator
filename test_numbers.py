@@ -33,12 +33,12 @@ class RandomNumberGeneratorTesting(unittest.TestCase):
 		type_error_values_print_num_testcases = [4, 5.5, True, 3+4j]
 		[self.assertRaises(TypeError, rng.store_print_num_testcases, i) for i in type_error_values_print_num_testcases]
 
-		# type checking for distinct
+		# type checking for is_float
 		type_error_values_is_float = [4, 5.5, True, 3+4j]
 		[self.assertRaises(TypeError, rng.store_is_float, i) for i in type_error_values_is_float]
 
 		# type checking for minvalue and maxvalue
-		type_error_values_minvalue_and_maxvalue = [[0.5, 1.2], [2.0, 15.0], [-10.0, -15.0], [-15.0, -13.0], [True, 1], [False, True], [False, 2]]
+		type_error_values_minvalue_and_maxvalue = [[0.5, 1.2], [2.0, 15.0], [-10.0, -15.0], [-15.0, -13.0], [True, 1], [False, True], [False, 2], [3+4j, True]]
 		[self.assertRaises(TypeError, rng.store_minvalue_and_maxvalue, i) for i in type_error_values_minvalue_and_maxvalue]
 
 	def test_output(self):
