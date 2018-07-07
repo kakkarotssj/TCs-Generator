@@ -68,7 +68,18 @@ class RandomNumberGenerator:
 		
 		if values['options']["is_float"] in self.possible_true_false_values[:4]:
 			for i in range(values["num_testcases"]):
-				stdout.write(str(random.uniform(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
+				stdout.write(str(get_random_float(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
 		else:
 			for i in range(values["num_testcases"]):
-				stdout.write(str(random.randint(values['options']["minvalue"], values['options']["maxvalue"])) + '\n')
+				stdout.write(str(get_random_integer(values['options']['minvalue'], values['options']['maxvalue'])) + '\n')
+
+
+def get_random_integer(minvalue, maxvalue):
+	random_int = random.randint(minvalue, maxvalue)
+
+	return random_int
+
+def get_random_float(minvalue, maxvalue):
+	random_float = random.uniform(minvalue, maxvalue)
+
+	return random_float
