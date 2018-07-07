@@ -18,12 +18,12 @@ class RandomNumberGenerator:
 		self.store_print_num_testcases(self.print_num_testcases)
 
 		# whether the number is float or not (BOOLEAN)
-		is_float = stdin.readline().strip().split()[0]
-		self.store_is_float(is_float)
+		self.is_float = stdin.readline().strip().split()[0]
+		self.store_is_float(self.is_float)
 
 		#minvalue first and then maxvalue with just a space
-		minvalue, maxvalue = map(int, raw_input().split())
-		self.store_minvalue_and_maxvalue([minvalue, maxvalue])
+		self.minvalue, self.maxvalue = map(int, raw_input().split())
+		self.store_minvalue_and_maxvalue([self.minvalue, self.maxvalue])
 
 	def store_num_testcases(self, num_testcases):
 		if type(num_testcases) != int:
