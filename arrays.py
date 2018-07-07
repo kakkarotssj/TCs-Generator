@@ -4,59 +4,116 @@ from sys import stdin, stdout
 class RandomArrayGenerator:
 	def __init__(self):
 		self.values = {}
+		self.options = {}
+		self.values["options"] = self.options
+
 		self.possible_true_false_values = ['T', 't', 'Y', 'y', 'F', 'f', 'N', 'n']
 
 		# number of test cases
 		self.num_testcases = int(stdin.readline().strip().split()[0])
-		self.values["num_testcases"] = self.num_testcases
+		self.store_num_testcases(self.num_testcases)
 
 		# whether to print number of test cases i.e num_testcases (BOOLEAN)
 		self.print_num_testcases = stdin.readline().strip().split()[0]
-		self.values["print_num_testcases"] = self.print_num_testcases
+		self.store_print_num_testcases(self.print_num_testcases)
 
 		self.options = {}
 		# size of array
 		self.array_size = int(stdin.readline().strip().split()[0])
-		self.options["array_size"] = self.array_size
+		self.store_array_size(self.array_size)
 
 		# whether to print size of array or not (BOOLEAN)
 		self.print_array_size = stdin.readline().strip().split()[0]
-		self.options["print_array_size"] = self.print_array_size
+		self.store_print_array_size(self.print_array_size)
 
 		# whether numbers in the array are in increasing order
 		self.strictly_increasing = stdin.readline().strip().split()[0]
-		self.options["strictly_increasing"] = self.strictly_increasing
+		self.store_strictly_increasing(self.strictly_increasing)
 
 		# whether numbers in the array has to be distinct or not (BOOLEAN)
 		self.distinct = stdin.readline().strip().split()[0]
-		self.options["distinct"] = self.distinct
+		self.store_distinct(self.distinct)
 
 		# minvalue and maxvalue in the array 
 		self.minvalue, self.maxvalue = map(int, stdin.readline().strip().split())
-		self.options["minvalue"] = self.minvalue
-		self.options["maxvalue"] = self.maxvalue
+		self.store_minvalue_and_maxvalue([[self.minvalue, self.maxvalue], self.values])
 
-		self.values["options"] = self.options
+	def store_num_testcases(self, num_testcases):
+		if type(num_testcases) != int:
+			raise TypeError("number of test cases needs to be an integer.")
+		else:
+			if num_testcases <= 0:
+				raise ValueError("number of test cases needs to be positive.")
+			else:
+				self.values['num_testcases'] = num_testcases
 
-		self.__validate_input()
+	def store_print_num_testcases(self, print_num_testcases):
+		if type(print_num_testcases) != str:
+			raise TypeError("whether to print num testcases or not should be string only")
+		else:
+			if print_num_testcases in self.possible_true_false_values:
+				self.values['print_num_testcases'] = print_num_testcases
+			else:
+				raise ValueError("whether to print test cases or not is invalid.")
+
+	def store_array_size(self, array_size):
+		if type(array_size) != int:
+			raise TypeError("array size needs to be an integer.")
+		else:
+			if array_size <= 0:
+				raise ValueError("array size needs to be positive.")
+			else:
+				self.values['options']['array_size'] = array_size
+
+	def store_print_array_size(self, print_array_size):
+		if type(print_array_size) != str:
+			raise TypeError("whether to print array size or not should be string only")
+		else:
+			if print_array_size in self.possible_true_false_values:
+				self.values['options']['print_array_size'] = print_array_size
+			else:
+				raise ValueError("whether to print array size or not is invalid.")
+
+	def store_strictly_increasing(self, strictly_increasing):
+		if type(strictly_increasing) != str:
+			raise TypeError("whether to have strictly_increasing integers in array or not should be string only")
+		else:
+			if strictly_increasing in self.possible_true_false_values:
+				self.values['options']['strictly_increasing'] = strictly_increasing
+			else:
+				raise ValueError("whether to have strictly_increasing integers in array or not or not is invalid.")
+
+	def store_distinct(self, distinct):
+		if type(distinct) != str:
+			raise TypeError("whether to have distinct integers in array or not should be string only")
+		else:
+			if distinct in self.possible_true_false_values:
+				self.values['options']['distinct'] = distinct
+			else:
+				raise ValueError("whether to have distinct integers in array or not or not is invalid.")
+
+	def store_minvalue_and_maxvalue(self, params):
+		min_and_max_values = params[0]
+		minvalue = min_and_max_values[0]
+		maxvalue = min_and_max_values[1]
+
+		strictly_increasing, distinct = params[1]['options']['strictly_increasing'], params[1]['options']['distinct']
+		array_size = params[1]['options']['array_size']
+
+		if type(minvalue) != int or type(maxvalue) != int:
+			raise TypeError("type of maximum value and mininum value needs to be int.")
+		else:
+			if maxvalue - minvalue <= 0:
+				raise ValueError("mininum value must be less than maximum value")
+			else:
+				if strictly_increasing in self.possible_true_false_values[:4] or distinct in self.possible_true_false_values[:4]:
+					if array_size > maxvalue - minvalue + 1:
+						raise ValueError("sufficient number of integers cannot be created. Please check options again.")
+			self.values['options']['minvalue'] = minvalue
+			self.values['options']['maxvalue'] = maxvalue
 
 	def get_values(self):
 		return self.values
-
-	def __validate_input(self):
-		assert self.values['num_testcases'] > 0, "Number of test cases provided has to be greater than 0"
-		assert self.values['print_num_testcases'] in self.possible_true_false_values, "whether to print number of test cases or not is not understandable"
-
-		assert self.values['options']['array_size'] > 0, "Size of array has to be greater than 0"
-		assert self.values['options']['print_array_size'] in self.possible_true_false_values, "whether to print size of array or not is not understandable"
-
-		assert self.values['options']['distinct'] in self.possible_true_false_values, "whether elements in array are distinct or not is not understandable"
-		assert self.values['options']['strictly_increasing'] in self.possible_true_false_values, "whether elements in array are strictly increasing or not is not understandable"
-
-		assert self.values['options']['minvalue'] < self.values['options']['maxvalue'], "min value for array elements has to be less than max value"
-
-		if self.values['options']['distinct'] in self.possible_true_false_values[:4] or self.values['options']['strictly_increasing'] in self.possible_true_false_values[:4]:
-			assert self.values['options']['array_size'] < self.values['options']['maxvalue'] - self.values['options']['minvalue'] + 1
 
 	def _get_distinct_values(self, values, arr):
 		partitions = [[values['options']['minvalue'], values['options']['maxvalue']]]
@@ -97,7 +154,7 @@ class RandomArrayGenerator:
 
 		strictly_increasing = False
 		if values['options']['strictly_increasing'] in self.possible_true_false_values[:4]:
-			distinct = True
+			strictly_increasing = True
 
 		for i in range(values["num_testcases"]):
 			if print_array_size:
