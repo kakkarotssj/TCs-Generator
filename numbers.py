@@ -35,16 +35,22 @@ class RandomNumberGenerator:
 				self.values['num_testcases'] = num_testcases
 
 	def store_print_num_testcases(self, print_num_testcases):
-		if print_num_testcases in self.possible_true_false_values:
-			self.values['print_num_testcases'] = print_num_testcases
+		if type(print_num_testcases) != str:
+			raise TypeError("whether to print num testcases or not should be string only")
 		else:
-			raise ValueError("whether to print test cases or not is invalid.")
+			if print_num_testcases in self.possible_true_false_values:
+				self.values['print_num_testcases'] = print_num_testcases
+			else:
+				raise ValueError("whether to print test cases or not is invalid.")
 
 	def store_is_float(self, is_float):
-		if is_float in self.possible_true_false_values:
-			self.values['options']['is_float'] = is_float
+		if type(is_float) != str:
+			raise TypeError("whether to have float numbers or not should be string only.")
 		else:
-			raise ValueError("whehter to have float numbers or not is invalid.")
+			if is_float in self.possible_true_false_values:
+				self.values['options']['is_float'] = is_float
+			else:
+				raise ValueError("whehter to have float numbers or not is invalid.")
 
 	def store_minvalue_and_maxvalue(self, min_and_max_values):
 		minvalue = min_and_max_values[0]
