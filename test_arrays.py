@@ -1,6 +1,5 @@
 import unittest
-from sys import stdin, stdout
-from arrays import RandomArrayGenerator
+from arrays import RandomArrayGenerator, get_random_array, get_distinct_butnot_increasing_array, get_increasing_array
 
 class RandomArrayGeneratorTesting(unittest.TestCase):
 	def test_values(self):
@@ -64,3 +63,47 @@ class RandomArrayGeneratorTesting(unittest.TestCase):
 		# type checking for minvalue and maxvalue
 		type_error_values_minvalue_and_maxvalue = [[0.5, 1.2], [2.0, 15.0], [-10.0, -15.0], [-15.0, -13.0], [True, 1], [False, True], [False, 2], [3+4j, True]]
 		[self.assertRaises(TypeError, rag.store_minvalue_and_maxvalue, [i, rag.values]) for i in type_error_values_minvalue_and_maxvalue]
+
+	def test_output(self):
+		rag = RandomArrayGenerator()
+
+		array_size = 10
+
+		# checking output for random array genration
+		output_error_values_for_random_array_minvalue_and_maxvalue = [[-20, -10], [0, 1], [-1, 0], [10, 20], [10, 19], [False, 2], [0, True], [-5, 5]]
+		for minvalue, maxvalue in output_error_values_for_random_array_minvalue_and_maxvalue:
+			arr = get_random_array([minvalue, maxvalue], array_size)
+
+			for element in arr:
+				self.assertGreaterEqual(maxvalue, element)
+				self.assertLessEqual(minvalue, element)
+
+		# check output for distinct but not increasing array generation
+		output_error_values_for_other_possibilities_array_minvalue_and_maxvalue = [[-20, -10], [0, 10], [-10, 0], [10, 20], [False, 10], [-9, True], [-5, 5]]
+		for minvalue, maxvalue in output_error_values_for_other_possibilities_array_minvalue_and_maxvalue:
+			arr = get_distinct_butnot_increasing_array([minvalue, maxvalue], array_size)
+
+			self.check_whether_distinct(minvalue, maxvalue, arr)
+
+		# check output for increasing array generation
+		for minvalue, maxvalue in output_error_values_for_other_possibilities_array_minvalue_and_maxvalue:
+			arr = get_increasing_array([minvalue, maxvalue], array_size)
+
+			self.check_whether_distinct(minvalue, maxvalue, arr)
+
+			# check whether increasing or not
+			[self.assertLess(arr[i], arr[i+1]) for i in range(len(arr)-1)]
+
+
+	def check_whether_distinct(self, minvalue, maxvalue, arr):
+		freq = {}
+		for key in arr:
+			self.assertGreaterEqual(maxvalue, key)
+			self.assertLessEqual(minvalue, key)
+
+			if freq.has_key(key):
+				freq[key] += 1
+			else:
+				freq[key] = 1
+
+		[self.assertEqual(1, value) for value in freq.values()]
