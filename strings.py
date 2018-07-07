@@ -7,79 +7,121 @@ import copy
 class RandomStringGenerator:
 	def __init__(self):
 		self.values = {}
+		self.options = {}
+		self.values['options'] = self.options
+
 		self.possible_true_false_values = ['T', 't', 'Y', 'y', 'F', 'f', 'N', 'n']
 
 		# number of test cases
 		self.num_testcases = int(stdin.readline().strip().split()[0])
-		self.values['num_testcases'] = self.num_testcases
+		self.store_num_testcases(self.num_testcases)
 
 		# whether to print number of test cases or not
 		self.print_num_testcases = stdin.readline().strip().split()[0]
-		self.values['print_num_testcases'] = self.print_num_testcases
-
-		self.options = {}
+		self.store_print_num_testcases(self.print_num_testcases)
 
 		# size of string
 		self.string_size = int(stdin.readline().strip().split()[0])
-		self.options['string_size'] = self.string_size
+		self.store_string_size(self.string_size)
 
 		# whether to print size of string or not
 		self.print_string_size = stdin.readline().strip().split()[0]
-		self.options['print_string_size'] = self.print_string_size
+		self.store_print_string_size(self.print_string_size)
 
 		# whether string should contain distinct numbers or not
 		self.distinct = stdin.readline().strip().split()[0]
-		self.options['distinct'] = self.distinct
+		self.store_distinct(self.distinct)
 
 		# whether uppercase, lowercase, digits, punctuation are allowed or not resp.
 		self.allowed = stdin.readline().strip().split()[0]
-		self.options['allowed'] = self.allowed
+		self.store_allowed(self.allowed)
+		self.possible_letters = self.get_possible_letters(self.allowed)
 
-		self.values['options'] = self.options
+	def store_num_testcases(self, num_testcases):
+		if type(num_testcases) != int:
+			raise TypeError("number of test cases needs to be an integer.")
+		else:
+			if num_testcases <= 0:
+				raise ValueError("number of test cases needs to be positive.")
+			else:
+				self.values['num_testcases'] = num_testcases
 
-		self.possible_letters = ''
+	def store_print_num_testcases(self, print_num_testcases):
+		if print_num_testcases in self.possible_true_false_values:
+			self.values['print_num_testcases'] = print_num_testcases
+		else:
+			raise ValueError("whether to print test cases or not is invalid.")
+
+	def store_string_size(self, string_size):
+		if type(string_size) != int:
+			raise TypeError("string_size needs to be an integer.")
+		else:
+			if string_size <= 0:
+				raise ValueError("string_size needs to be positive.")
+			else:
+				self.values['options']['string_size'] = string_size
+
+	def store_print_string_size(self, print_string_size):
+		if print_string_size in self.possible_true_false_values:
+			self.values['options']['print_string_size'] = print_string_size
+		else:
+			raise ValueError("whether to print string size or not is invalid.")
+
+	def store_distinct(self, distinct):
+		if distinct in self.possible_true_false_values:
+			self.values['options']['distinct'] = distinct
+		else:
+			raise ValueError("whether to have distinct letters or not is invalid.")
+
+	def store_allowed(self, allowed):
+		if len(allowed) != 4:
+			raise ValueError("choice of allowed characters must be 4 lenghts only.")
+		else:
+			set_allowed = list(set(allowed))
+			if len(set_allowed) == 1 and set_allowed == ['n']:
+				raise ValueError("Atleast one type of letter must be allowed.")
+			else:
+				for char in allowed:
+					if char not in self.possible_true_false_values:
+						raise ValueError("choice for allowed characters is not understandable")
+
+		self.values['options']['allowed'] = allowed
+
+	def get_possible_letters(self, allowed):
+		possible_letters = ''
 		for i in range(4):
-			if i == 0 and self.values['options']['allowed'][0] in self.possible_true_false_values[:4]:
-				self.possible_letters += string.uppercase
-			elif i == 1 and self.values['options']['allowed'][1] in self.possible_true_false_values[:4]:
-				self.possible_letters += string.lowercase
-			elif i == 2 and self.values['options']['allowed'][2] in self.possible_true_false_values[:4]:
-				self.possible_letters += string.digits
-			elif i == 3 and self.values['options']['allowed'][3] in self.possible_true_false_values[:4]:
-				self.possible_letters += string.punctuation
+			if i == 0 and allowed[0] in self.possible_true_false_values[:4]:
+				possible_letters += string.uppercase
+			elif i == 1 and allowed[1] in self.possible_true_false_values[:4]:
+				possible_letters += string.lowercase
+			elif i == 2 and allowed[2] in self.possible_true_false_values[:4]:
+				possible_letters += string.digits
+			elif i == 3 and allowed[3] in self.possible_true_false_values[:4]:
+				possible_letters += string.punctuation
 
-		self.__validate_values()
+		if len(possible_letters) < self.values['options']['string_size']:
+			raise ValueError("Required amount of distinct letters cannot be created in the chosen range")
+
+		return possible_letters
 
 	def get_values(self):
 		return self.values
-
-	def __validate_values(self):
-		assert self.values['num_testcases'] > 0, "Number of test cases provided has to be greater than 0"
-		assert self.values['print_num_testcases'] in self.possible_true_false_values, "whether to print number of test cases or not is not understandable"
-
-		assert self.values['options']['string_size'] > 0, "Invalid requested size of string"
-		assert self.values['options']['print_string_size'] in self.possible_true_false_values, "Invalid choice for whether printing string size or not"
-
-		assert self.values['options']['distinct'] in self.possible_true_false_values, "Invalid distinct or not value"
-
-		assert len(self.possible_letters) > 0, "Carefully enter the choice of allowed letters"
-		
-		assert len(self.values['options']['allowed']) == 4, "Carefully enter the 4 valid letters for the choice of letters"
-		for y_n in self.values['options']['allowed']:
-			assert y_n in self.possible_true_false_values, "allowed values cannot be identified correctly"
 
 	def print_values(self, values):
 		if values['print_num_testcases'] in self.possible_true_false_values[:4]:
 			stdout.write(str(values['num_testcases']) + '\n')
 
-		for _ in range(values['num_testcases']):
-			if values['options']['print_string_size'] in self.possible_true_false_values[:4]:
-				stdout.write(str(values['options']['string_size']) + '\n')
+		print_string_size = False
+		if values['options']['print_string_size'] in self.possible_true_false_values[:4]:
+			print_string_size = True
 
-			ans = ''
-			if values['options']['distinct'] in self.possible_true_false_values[:4]:
-				if values['options']['string_size'] > len(self.possible_letters):
-					raise ValueError("Required amount of distinct letters cannot be created in the chosen range")
+		distinct = False
+		if values['options']['distinct'] in self.possible_true_false_values[:4]:
+			distinct = True
+
+		for _ in range(values['num_testcases']):
+			if print_string_size:
+				stdout.write(str(values['options']['string_size']) + '\n')
 				
 				temp_possible_letters = list(self.possible_letters)
 				j = 0
