@@ -3,4 +3,16 @@ y # whether to print number of test cases or not
 10 # string size
 y # whether to print string size or not
 y # whether characters have to distinct or not
+nnny # whether uppercase, lowercase, digits, punctuation are allowed or not resp.
+5 # number of testcases
+y # whether to print number of test cases or not
+10 # string size
+y # whether to print string size or not
+y # whether characters have to distinct or not
+yyyy # whether uppercase, lowercase, digits, punctuation are allowed or not resp.
+5 # number of testcases
+y # whether to print number of test cases or not
+10 # string size
+y # whether to print string size or not
+y # whether characters have to distinct or not
 yyyy # whether uppercase, lowercase, digits, punctuation are allowed or not resp.
