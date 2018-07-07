@@ -36,7 +36,7 @@ class RandomStringGenerator:
 		self.allowed = stdin.readline().strip().split()[0]
 		self.store_allowed(self.allowed)
 
-		self.store_possible_letters(self.allowed)
+		self.store_possible_letters(self.allowed, self.values)
 
 	def store_num_testcases(self, num_testcases):
 		if type(num_testcases) != int:
@@ -100,7 +100,7 @@ class RandomStringGenerator:
 
 		self.values['options']['allowed'] = allowed
 
-	def store_possible_letters(self, allowed):
+	def store_possible_letters(self, allowed, values):
 		possible_letters = ''
 		for i in range(4):
 			if i == 0 and allowed[0] in self.possible_true_false_values[:4]:
@@ -112,8 +112,9 @@ class RandomStringGenerator:
 			elif i == 3 and allowed[3] in self.possible_true_false_values[:4]:
 				possible_letters += string.punctuation
 
-		if len(possible_letters) < self.values['options']['string_size']:
-			raise ValueError("Required amount of distinct letters cannot be created in the chosen range")
+		if values['options']['distinct'] in self.possible_true_false_values[:4]:
+			if len(possible_letters) < self.values['options']['string_size']:
+				raise ValueError("Required amount of distinct letters cannot be created in the chosen range")
 
 		self.values['possible_letters'] = possible_letters
 
@@ -145,16 +146,11 @@ class RandomStringGenerator:
 
 def get_distinct_letters(possible_letters, string_size):
 	temp_possible_letters = list(possible_letters)
-	j = 0
-	ans = ''
-	while j != string_size:
-		random_letter = temp_possible_letters.pop(random.randint(0, len(temp_possible_letters) - 1))
-		ans += random_letter
-		j += 1
+	ans = ''.join([temp_possible_letters.pop(random.randint(0, len(temp_possible_letters) - 1)) for _ in range(string_size)])
 	
 	return ans
 
 def get_random_letters(possible_letters, string_size):
-	ans = ''.join(random.choice(possible_letters) for i in range(string_size))
+	ans = ''.join([random.choice(possible_letters) for i in range(string_size)])
 
 	return ans
